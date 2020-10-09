@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostPost;
 
 class PostController extends Controller
 {
@@ -14,7 +16,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        echo "HOLA MUNDO";
+
+        /* Recupero datos de la tabla post mediante el modelo */
+        // $posts = Post::orderBy('created_at', 'DESC')->get();
+        $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
+
+
+        return view('dashboard.post.index', ['posts' => $posts]);
     }
 
     /**
@@ -24,8 +32,8 @@ class PostController extends Controller
      */
     public function create()
     {
-
-      return view('dashboard.post.create');
+        /* Como segundo parametro instancia post (video 51) */
+        return view('dashboard.post.create', ['post' => new Post()]);
     }
 
     /**
@@ -34,9 +42,41 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostPost $request)
     {
-        echo "hola mundo";
+        // dd($request); /* var_dump() and die()*/
+
+        /* --- Recogida datos --- */
+
+        /* Campo no existe */
+        // echo $request->input('title__', 'El campo no existe');
+
+        /* Mostrar datos */
+        // echo '<pre>', print_r($request->all(), true ), '</pre>';
+        // dd($request->all()); /* var_dump() and die()*/
+
+        /* Recogida cada campo */
+        // echo $request->input('title');
+        // echo $request->title;
+        // echo request('title'); /* Sin usar use Illuminate\Http\Request; */
+
+
+        /* ---Validación ( sino la pasa devuelve formulario ) Creamos request video 41--- */
+        // $request->validate([
+        //     'title' => 'required|min:5|max:500',
+        //     // 'url_clean' => 'required|min:5|max:500',
+        //     'content' => 'required|min:5',
+        // ]);
+
+
+
+        /* Test */
+        // dd($request->validated());
+        // dd(Post::created($request->validated()));
+
+
+        Post::create($request->validated()); /* le paso los datos validados */
+        return back()->with('status', 'Post creado con exito');
     }
 
     /**
@@ -45,9 +85,20 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        /* Forma 'clasica' */
+        // $post = Post::find($id);
+        // if(isset($post)){
+        //     return view('dashboard.post.show', ['post' => $post]);
+        // }
+
+        /* Usando directamente failOrFail() */
+        // $post = Post::findOrFail($id);
+
+        /* Usando el modelo (Ver video 49) */
+
+        return view('dashboard.post.show', ['post' => $post]);
     }
 
     /**
@@ -56,9 +107,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('dashboard.post.edit', ['post' => $post]);
     }
 
     /**
@@ -68,9 +119,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePostPost $request, Post $post)
     {
-        //
+
+        $post->update($request->validated()); /* le paso los datos validados */
+        return back()->with('status', 'Post actualizado con éxito');
     }
 
     /**
@@ -79,8 +132,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return back()->with('status', 'Post eliminado con éxito');
     }
 }
