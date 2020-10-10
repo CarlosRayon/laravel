@@ -5,7 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePostPost;
+use App\Http\Requests\StorePostPost; /* request validation video 42 */
 
 class PostController extends Controller
 {
@@ -20,8 +20,6 @@ class PostController extends Controller
         /* Recupero datos de la tabla post mediante el modelo */
         // $posts = Post::orderBy('created_at', 'DESC')->get();
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
-
-
         return view('dashboard.post.index', ['posts' => $posts]);
     }
 
@@ -129,7 +127,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  objecto  $post
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)

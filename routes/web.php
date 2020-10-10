@@ -47,3 +47,4 @@ Route::get('/', function () {
 /* Llamando a un controlador */
 
 Route::resource('dashboard/post', 'dashboard\PostController');
+Route::resource('dashboard/category','dashboard\CategoryController');

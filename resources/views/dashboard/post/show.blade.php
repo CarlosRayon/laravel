@@ -16,6 +16,10 @@
     <div class="form-group">
         <label for="url_clean">Url limpia</label>
         <input class="form-control" type="text" name="url_clean" id="url_clean" value="{{$post->url_clean}}" readonly>
+          {{-- error individual --}}
+        @error('content')
+        <small class="text-danger">{{$message}}</small>
+        @enderror
     </div>
     <div class="form-group">
         <label for="content">Contenido</label>

@@ -19,7 +19,6 @@
 
         @include('dashboard.partials.session-flash-status')
 
-        {{-- Formulario --}}
         @yield('content')
     </div>
 </body>
