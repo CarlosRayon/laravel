@@ -13,6 +13,9 @@
                 Titulo
             </td>
             <td>
+                Categoria
+            </td>
+            <td>
                 Posteado
             </td>
             <td>
@@ -34,6 +37,9 @@
             </td>
             <td>
                 {{$post->title}}
+            </td>
+            <td>
+                {{$post->category->title}} {{--  Viene del public function category de Post --}}
             </td>
             <td>
                 {{$post->posted}}

@@ -3,8 +3,6 @@
 
 @section('content')
 
-    {{--  token de autentificacion del formulario --}}
-    @csrf
     <div class="form-group">
         <label for="title">Titulo</label>
     <input class="form-control" type="text" name="title" id="title" value="{{$post->title}}" readonly>

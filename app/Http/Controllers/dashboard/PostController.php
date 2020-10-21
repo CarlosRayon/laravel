@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\dashboard;
 
+use App\Category;
 use App\Post;
+use App\PostImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostPost; /* request validation video 42 */
@@ -20,6 +22,7 @@ class PostController extends Controller
         /* Recupero datos de la tabla post mediante el modelo */
         // $posts = Post::orderBy('created_at', 'DESC')->get();
         $posts = Post::orderBy('created_at', 'DESC')->paginate(5);
+        // dd($posts);
         return view('dashboard.post.index', ['posts' => $posts]);
     }
 
@@ -30,8 +33,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        $categories = Category::pluck('id', 'title'); /* video 58 */
         /* Como segundo parametro instancia post (video 51) */
-        return view('dashboard.post.create', ['post' => new Post()]);
+        return view('dashboard.post.create', ['post' => new Post(), 'categories' => $categories]);
     }
 
     /**
@@ -107,7 +111,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('dashboard.post.edit', ['post' => $post]);
+        // dd($post->image->images);
+        $categories = Category::pluck('id', 'title'); /* video 58 */
+        return view('dashboard.post.edit', ['post' => $post, 'categories' => $categories]);
     }
 
     /**
@@ -122,6 +128,21 @@ class PostController extends Controller
 
         $post->update($request->validated()); /* le paso los datos validados */
         return back()->with('status', 'Post actualizado con éxito');
+    }
+
+
+    /* Carga de imagen video 62 */
+    public function image(Request $request, Post $post)
+    {
+        $request->validate([
+            'image' => 'required|mimes:jpeg,bmp,png|max:10240' /* 10MG */
+        ]);
+
+        $filename = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $filename); /* Guarda imagen el public/images */
+
+        PostImage::create(['images' => $filename, 'post_id' => $post->id]);
+        return back()->with('status', 'Imagen cargada en el post con éxito');
     }
 
     /**

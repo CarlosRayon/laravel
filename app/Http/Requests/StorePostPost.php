@@ -27,6 +27,8 @@ class StorePostPost extends FormRequest
             'title' => 'required|min:4|max:500',
             'url_clean' => 'required|min:4|max:500',
             'content' => 'required|min:4',
+            'category_id' => 'required',
+            'posted' => 'required',
         ];
     }
 }

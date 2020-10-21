@@ -8,7 +8,7 @@
     <title>Módulo admin</title>
     {{-- Dependencias necesarias asset() hace refenrencia a la carpeta public--}}
     <link rel="stylesheet" href="{{asset("css/app.css")}}">
-    <script src="{{asset("js/app.js")}}"></script>
+
 </head>
 
 <body>
@@ -21,6 +21,7 @@
 
         @yield('content')
     </div>
+    <script src="{{asset("js/app.js")}}"></script>
 </body>
 
 </html>

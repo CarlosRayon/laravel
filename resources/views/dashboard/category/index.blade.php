@@ -12,9 +12,7 @@
             <td>
                 Titulo
             </td>
-            <td>
-                Url
-            </td>
+
             <td>
                 Creación
             </td>
@@ -35,9 +33,7 @@
             <td>
                 {{$category->title}}
             </td>
-            <td>
-                {{$category->url_clean}}
-            </td>
+
             <td>
                 {{$category->created_at->format('d-m-Y')}} {{-- Usa la libreria carbon ya integrada --}}
             </td>
